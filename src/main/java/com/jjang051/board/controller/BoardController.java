@@ -5,6 +5,7 @@ import com.jjang051.board.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class BoardController {
 
+
     private final BoardService boardService;
+
+//    public BoardController(BoardService boardService) {
+//        this.boardService = boardService;
+//    }
 
     @GetMapping("/write")
     public String write(Model model) {
@@ -34,8 +40,8 @@ public class BoardController {
         }
         log.info("title==={}",boardDto.getTitle());
         log.info("content==={}",boardDto.getContent());
-        //
         boardService.writeBoard(boardDto);
+
         return "redirect:/";
     }
 }

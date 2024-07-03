@@ -13,7 +13,6 @@ public class BoardService {
     private final BoardDao boardDao;
 
     public int writeBoard(BoardDto boardDto) {
-        int result = boardDao.writeBoard(boardDto);
-        return result;
+        return boardDao.writeBoard(boardDto);
     }
 }

@@ -12,7 +12,5 @@ spring:
     console:
       path: /h2-console
       enabled: true
-mybatis:
-  config-location: classpath:mapper/config/config.xml
-  mapper-locations: classpath:mapper/sql/**/*.xml
+
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/common.css"
+          th:href="@{/css/common.css}">
+
+    <script src="../../static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-5 mt-5">LIST</h1>
+    <table class="table table-striped">
+        <colgroup>
+            <col style="width:80px">
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">NO</th>
+                <th scope="col">TITLE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="boardItem,boardItemStat : ${boardList}">
+                <th scope="row" th:text="${boardItemStat.count}">1</th>
+                <td>
+<!--                    http://localhost:8081/board/1-->
+                    <a href="" th:href="@{/board/{id}(id=${boardItem.id})}"  th:text="${boardItem.title}">Mark</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="mt-5"><a href="" th:href="@{/board/write}" class="btn btn-primary">WRITE</a></div>
+</div>
+</body>
+</html>

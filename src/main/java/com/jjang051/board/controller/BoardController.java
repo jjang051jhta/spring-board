@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/board")
 @Slf4j
@@ -30,6 +32,26 @@ public class BoardController {
         return "board/write";
     }
 
+    @GetMapping("/list")
+    public String list(Model model) {
+        List<BoardDto> boardList = boardService.getAllBoard();
+        model.addAttribute("boardList",boardList);
+        return "board/list";
+    }
+
+    @GetMapping("/{id}")
+    public String read(@PathVariable int id, Model model) {
+
+        BoardDto boardDto = boardService.readBoard(id);
+        log.info("boardDto==={}",boardDto);
+        log.info("id==={}",id);
+        model.addAttribute("boardDto",boardDto);
+        return "board/view";
+    }
+
+
+
+
     @PostMapping("/write")
     public String writeProcess(@Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult) {
         //dao 들고와서 db에 저장하면된다. mybatis, jpa
@@ -42,6 +64,6 @@ public class BoardController {
         log.info("content==={}",boardDto.getContent());
         boardService.writeBoard(boardDto);
 
-        return "redirect:/";
+        return "redirect:/board/list";
     }
 }

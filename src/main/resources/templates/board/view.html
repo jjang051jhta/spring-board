@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/common.css"
+          th:href="@{/css/common.css}">
+
+    <script src="../../static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-5 mt-5">LIST</h1>
+    <table class="table table-striped">
+        <colgroup>
+            <col style="width:80px">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th>ID</th>
+            <td th:text="${boardDto.id}">1</td>
+        </tr>
+        <tr>
+            <th>TITLE</th>
+            <td th:text="${boardDto.title}">1</td>
+        </tr>
+        <tr>
+            <th>CONTENT</th>
+            <td th:text="${boardDto.content}">1</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="mt-5">
+        <a href="" th:href="@{/board/write}" class="btn btn-primary">WRITE</a>
+        <a href="" th:href="@{/board/list}" class="btn btn-primary">LIST</a>
+    </div>
+</div>
+</body>
+</html>

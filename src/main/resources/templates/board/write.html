@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+
+</head>
+<body>
+    <h1>write</h1>
+    <form action="/board/write" method="post">
+        <input type="text" name="title" class="form-control">
+        <button class="btn btn-primary">WRITE</button>
+    </form>
+    <img src="../../static/images/layout/profile.png"
+        th:src="@{/images/layout/profile.png}"
+    >
+</body>
+</html>

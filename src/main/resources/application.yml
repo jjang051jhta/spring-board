@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: board
+  profiles:
+    active: dev
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+

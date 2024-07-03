@@ -19,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
+    //front controller === controller (view 해결)
+
 
     private final BoardService boardService;
 
@@ -29,6 +31,8 @@ public class BoardController {
     @GetMapping("/write")
     public String write(Model model) {
         model.addAttribute("boardDto", new BoardDto());
+        model.addAttribute("title"," 글쓰기");
+        //view resolver  template + board/write + .html
         return "board/write";
     }
 
@@ -39,19 +43,33 @@ public class BoardController {
         return "board/list";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        model.addAttribute("boardDto", new BoardDto());
+        return "board/delete";
+    }
+
+
+    @PostMapping("/delete/{id}")
+    public String deleteProcess(@PathVariable int id, @Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "board/delete";
+        }
+        log.info("title==={}",boardDto.getTitle());
+        log.info("content==={}",boardDto.getContent());
+
+        return "redirect:/board/list";
+    }
+
+
     @GetMapping("/{id}")
     public String read(@PathVariable int id, Model model) {
-
         BoardDto boardDto = boardService.readBoard(id);
         log.info("boardDto==={}",boardDto);
         log.info("id==={}",id);
         model.addAttribute("boardDto",boardDto);
         return "board/view";
     }
-
-
-
-
     @PostMapping("/write")
     public String writeProcess(@Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult) {
         //dao 들고와서 db에 저장하면된다. mybatis, jpa
@@ -63,7 +81,6 @@ public class BoardController {
         log.info("title==={}",boardDto.getTitle());
         log.info("content==={}",boardDto.getContent());
         boardService.writeBoard(boardDto);
-
         return "redirect:/board/list";
     }
 }

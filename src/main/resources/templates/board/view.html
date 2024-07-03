@@ -38,6 +38,8 @@
     <div class="mt-5">
         <a href="" th:href="@{/board/write}" class="btn btn-primary">WRITE</a>
         <a href="" th:href="@{/board/list}" class="btn btn-primary">LIST</a>
+        <a href="" th:href="@{/board/delete/{id}(id=${boardDto.id})}" class="btn btn-danger">DELETE</a>
+
     </div>
 </div>
 </body>

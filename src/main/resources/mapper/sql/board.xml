@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jjang051.board.dao.BoardDao">
     <insert id="writeBoard" parameterType="com.jjang051.board.dto.BoardDto">
-        insert into board values(board_seq.nextval, #{title}, #{content})
+        insert into board values(board_seq.nextval, #{title}, #{content},#{password},sysdate)
         <!-- insert into board values(nextval('board_seq'), #{title}, #{content}) -->
     </insert>
     <select id="readBoard" parameterType="int"
@@ -14,4 +14,7 @@
     <select id="getAllBoard" resultType="com.jjang051.board.dto.BoardDto">
         select * from board
     </select>
+    <delete id="deleteBoard" parameterType="com.jjang051.board.dto.BoardDto">
+        delete from board where id = #{id}
+    </delete>
 </mapper>

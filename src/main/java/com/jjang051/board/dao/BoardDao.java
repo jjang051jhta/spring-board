@@ -11,4 +11,6 @@ public interface BoardDao {
     int writeBoard(BoardDto boardDto);
     BoardDto readBoard(int id);
     List<BoardDto> getAllBoard();
+
+    int deleteBoard(BoardDto boardDto);
 }

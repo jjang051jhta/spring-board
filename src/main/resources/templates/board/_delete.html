@@ -16,16 +16,14 @@
 <body>
 <div class="container">
     <h1 class="mb-5 mt-5">DELETE</h1>
-    <form action="" th:action="@{/board/delete}" method="post" th:object="${deleteBoardDto}">
+    <form action="" th:action="@{/board/delete}" th:method="post" method="post" th:object="${deleteBoardDto}">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label  class="form-label">PASSWORD</label>
             <input type="password" class="form-control" th:field="*{password}">
         </div>
-        <div class="mt-3">
-            <button class="btn btn-danger">DELETE</button>
-            <a href="" th:href="@{/board/list}" class="btn btn-primary">LIST</a>
-        </div>
+
+        <div class="mt-3"><button class="btn btn-danger fw-bold">DELETE</button> </div>
     </form>
 </div>
 </body>

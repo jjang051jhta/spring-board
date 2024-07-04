@@ -25,11 +25,6 @@ public class BoardDto {
     private String password;
 
     private String regDate;
-    @Builder
-    public BoardDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
     @Builder
     public BoardDto(String title, String content, String password) {
@@ -38,18 +33,6 @@ public class BoardDto {
         this.password = password;
     }
 
-    @Builder
-    public BoardDto(String title, String content, String password, String regDate) {
-        this.title = title;
-        this.content = content;
-        this.password = password;
-        this.regDate = regDate;
-    }
 
-    @Builder
-    public BoardDto(int id,String password) {
 
-        this.password = password;
-        this.id = id;
-    }
 }

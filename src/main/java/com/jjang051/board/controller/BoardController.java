@@ -1,9 +1,9 @@
 package com.jjang051.board.controller;
 
 import com.jjang051.board.dto.BoardDto;
+import com.jjang051.board.dto.DeleteBoardDto;
 import com.jjang051.board.service.BoardService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,17 +16,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/board")
 @Slf4j
-@RequiredArgsConstructor
+
 public class BoardController {
 
-    //front controller === controller (view 해결)
+
+    @Autowired
+    private BoardService boardService;
 
 
-    private final BoardService boardService;
-
-//    public BoardController(BoardService boardService) {
-//        this.boardService = boardService;
-//    }
 
     @GetMapping("/write")
     public String write(Model model) {
@@ -36,6 +33,26 @@ public class BoardController {
         return "board/write";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        DeleteBoardDto deleteBoardDto = DeleteBoardDto.builder()
+                                        .id(id)
+                                        .build();
+        model.addAttribute("deleteBoardDto",deleteBoardDto);
+        return "board/delete";
+    }
+
+    @PostMapping("/delete")
+    public String deleteProcess(@ModelAttribute DeleteBoardDto paramDeleteBoardDto) {
+        DeleteBoardDto deleteBoardDto = DeleteBoardDto.builder()
+                .id(paramDeleteBoardDto.getId())
+                .password(paramDeleteBoardDto.getPassword())
+                .build();
+        boardService.deleteBoard(deleteBoardDto);
+        return "redirect:/board/list";
+    }
+
+
     @GetMapping("/list")
     public String list(Model model) {
         List<BoardDto> boardList = boardService.getAllBoard();
@@ -43,23 +60,7 @@ public class BoardController {
         return "board/list";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id, Model model) {
-        model.addAttribute("boardDto", new BoardDto());
-        return "board/delete";
-    }
 
-
-    @PostMapping("/delete/{id}")
-    public String deleteProcess(@PathVariable int id, @Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return "board/delete";
-        }
-        log.info("title==={}",boardDto.getTitle());
-        log.info("content==={}",boardDto.getContent());
-
-        return "redirect:/board/list";
-    }
 
 
     @GetMapping("/{id}")

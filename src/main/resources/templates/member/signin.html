@@ -33,9 +33,37 @@
                     Looks good!
                 </div>
             </div>
-            <div class="mt-3"><button class="btn btn-primary">SIGNIN</button> </div>
+            <div class="mt-3">
+                <button class="btn btn-primary">SIGNIN</button>
+                <button class="btn btn-primary" type="button" id="btn-signin-ajax">SIGNIN-AJAX</button>
+            </div>
         </form>
     </div>
+<script>
+    $("#btn-signin-ajax").on("click",function(){
+        //const sendData = $("form").serialize();
+        ///member/signin?userId=aaa&userName=jkfjk&password=yyuuyfuy&email=ifudiu
+        const sendData = {};
+        sendData.userId=$("input[name='userId']").val();
+        sendData.userName=$("input[name='userName']").val();
+        sendData.email=$("input[name='email']").val();
+        sendData.password=$("input[name='password']").val();
+        //console.log(sendData);
+
+        $.ajax({
+            url:"/member/signin-ajax",
+            data:JSON.stringify(sendData),
+            contentType:"application/json",
+            method:"POST",
+            success:function (res){
+                if(res.status==="ok") {
+                    alert("회원가입되었습니다.");
+                    location.href="/member/login";
+                }
+            }
+        });
+    })
+</script>
 <script th:replace="~{fragment/footer}"></script>
 </body>
 </html>

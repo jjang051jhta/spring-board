@@ -18,6 +18,6 @@ public class MemberService {
 //    }
 
     public int signin(MemberDto memberDto) {
-        return memberDao.singin(memberDto);
+        return memberDao.signin(memberDto);
     }
 }

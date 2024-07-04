@@ -6,8 +6,5 @@
     <insert id="signin" parameterType="com.jjang051.board.dto.MemberDto">
         insert into member values(
         member_seq.nextval, #{userId}, #{userName},#{email},#{password},sysdate)
-        <!-- insert into board values(nextval('board_seq'), #{title}, #{content}) -->
     </insert>
-
-
 </mapper>

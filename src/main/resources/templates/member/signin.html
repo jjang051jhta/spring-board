@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragment/header :: header02('SIGNIN','alien02.png')}"></head>
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-5">SIGN IN</h1>
+        <form action="" th:action="@{/member/signin}" method="post" th:object="${memberDto}">
+            <div class="mb-3">
+                <label class="form-label">USER ID</label>
+                <input type="text" class="form-control" placeholder="ID를 쓰세요" th:field="*{userId}">
+                <div class="valid-feedback" th:errors="*{userId}">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">USER NAME</label>
+                <input type="text" class="form-control" placeholder="이름을 쓰세요" th:field="*{userName}">
+                <div class="valid-feedback" th:errors="*{userName}">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">EMAIL</label>
+                <input type="text" class="form-control" placeholder="이메일을 쓰세요"  th:field="*{email}">
+                <div class="valid-feedback" th:errors="*{email}">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label">PASSWORD</label>
+                <input type="password" class="form-control"  th:field="*{password}">
+                <div class="valid-feedback" th:errors="*{password}">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mt-3"><button class="btn btn-primary">SIGNIN</button> </div>
+        </form>
+    </div>
+<script th:replace="~{fragment/footer}"></script>
+</body>
+</html>

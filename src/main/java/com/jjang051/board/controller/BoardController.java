@@ -63,14 +63,26 @@ public class BoardController {
                 .id(paramDeleteBoardDto.getId())
                 .password(paramDeleteBoardDto.getPassword())
                 .build();
-        boardService.deleteBoard(deleteBoardDto);
-        AlertDto alertDto = AlertDto.builder()
-                .title("OK")
-                .icon("warning")
-                .text("잘지워졌음")
-                .build();
-        redirectAttributes.addFlashAttribute("alertDto",alertDto);
-        return "redirect:/board/list";
+        int result = boardService.deleteBoard(deleteBoardDto);
+        AlertDto alertDto = null;
+        if(result>0) {
+            alertDto = AlertDto.builder()
+                    .title("OK")
+                    .icon("warning")
+                    .text("잘지워졌음")
+                    .build();
+            redirectAttributes.addFlashAttribute("alertDto",alertDto);
+            return "redirect:/board/list";
+        } else {
+            alertDto = AlertDto.builder()
+                    .title("FAIL")
+                    .icon("error")
+                    .text("패스워드 확인해주세요")
+                    .build();
+            redirectAttributes.addFlashAttribute("alertDto",alertDto);
+            return "redirect:/board/delete/"+paramDeleteBoardDto.getId();
+        }
+
     }
 
 
@@ -102,7 +114,7 @@ public class BoardController {
         }
         log.info("title==={}",boardDto.getTitle());
         log.info("content==={}",boardDto.getContent());
-        boardService.writeBoard(boardDto);
+        int result = boardService.writeBoard(boardDto);
         return "redirect:/board/list";
     }
 }

@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
-          th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../../static/css/common.css"
-          th:href="@{/css/common.css}">
-
-    <script src="../../static/js/bootstrap.bundle.min.js"
-            th:src="@{/js/bootstrap.bundle.min.js}"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
+<head th:replace="~{fragment/header}"></head>
 <body>
 <div class="container">
     <h1 class="mb-5 mt-5">LIST</h1>
@@ -39,18 +27,6 @@
     </table>
     <div class="mt-5"><a href="" th:href="@{/board/write}" class="btn btn-primary">WRITE</a></div>
 </div>
-<th:block th:if="${alertDto!=null}">
-    <script th:inline="javascript">
-            const title = [[${alertDto.title}]];
-            const text = [[${alertDto.text}]];
-            const icon = [[${alertDto.icon}]];
-            Swal.fire({
-                title: title,
-                text: text,
-                icon: icon
-            });
-
-    </script>
-</th:block>
+<script th:replace="~{fragment/footer}"></script>
 </body>
 </html>

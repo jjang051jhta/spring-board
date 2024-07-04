@@ -11,8 +11,7 @@
     <script src="../../static/js/bootstrap.bundle.min.js"
             th:src="@{/js/bootstrap.bundle.min.js}"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container">
@@ -40,6 +39,18 @@
     </table>
     <div class="mt-5"><a href="" th:href="@{/board/write}" class="btn btn-primary">WRITE</a></div>
 </div>
+<th:block th:if="${alertDto!=null}">
+    <script th:inline="javascript">
+            const title = [[${alertDto.title}]];
+            const text = [[${alertDto.text}]];
+            const icon = [[${alertDto.icon}]];
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon
+            });
 
+    </script>
+</th:block>
 </body>
 </html>

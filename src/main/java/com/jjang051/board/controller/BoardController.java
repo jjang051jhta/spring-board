@@ -1,5 +1,6 @@
 package com.jjang051.board.controller;
 
+import com.jjang051.board.dto.AlertDto;
 import com.jjang051.board.dto.BoardDto;
 import com.jjang051.board.dto.DeleteBoardDto;
 import com.jjang051.board.service.BoardService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -33,22 +35,41 @@ public class BoardController {
         return "board/write";
     }
 
+//    @GetMapping("/delete/{id}")
+//    public String delete(@PathVariable int id, Model model) {
+//        DeleteBoardDto deleteBoardDto = DeleteBoardDto.builder()
+//                                        .id(id)
+//                                        .build();
+//        model.addAttribute("deleteBoardDto",deleteBoardDto);
+//        return "board/delete";
+//    }
+
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id, Model model) {
-        DeleteBoardDto deleteBoardDto = DeleteBoardDto.builder()
-                                        .id(id)
-                                        .build();
-        model.addAttribute("deleteBoardDto",deleteBoardDto);
+    public String delete(@PathVariable int id) {
         return "board/delete";
     }
 
+    @GetMapping("/delete-param")
+    public String deleteParam() {
+        return "board/delete-param";
+    }
+
     @PostMapping("/delete")
-    public String deleteProcess(@ModelAttribute DeleteBoardDto paramDeleteBoardDto) {
+    public String deleteProcess(
+            @ModelAttribute DeleteBoardDto paramDeleteBoardDto,
+            RedirectAttributes redirectAttributes
+    ) {
         DeleteBoardDto deleteBoardDto = DeleteBoardDto.builder()
                 .id(paramDeleteBoardDto.getId())
                 .password(paramDeleteBoardDto.getPassword())
                 .build();
         boardService.deleteBoard(deleteBoardDto);
+        AlertDto alertDto = AlertDto.builder()
+                .title("OK")
+                .icon("warning")
+                .text("잘지워졌음")
+                .build();
+        redirectAttributes.addFlashAttribute("alertDto",alertDto);
         return "redirect:/board/list";
     }
 

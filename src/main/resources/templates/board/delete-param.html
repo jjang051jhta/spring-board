@@ -17,7 +17,7 @@
 <div class="container">
     <h1 class="mb-5 mt-5">DELETE</h1>
     <form action="" th:action="@{/board/delete}" method="post">
-        <input type="hidden" name="id" value="27" th:value="__${id}__">
+        <input type="hidden" name="id" value="27" th:value="${param.id}">
         <div class="mb-3">
             <label  class="form-label">PASSWORD</label>
             <input type="password" class="form-control" name="password">

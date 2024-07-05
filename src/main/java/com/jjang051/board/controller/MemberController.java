@@ -1,11 +1,14 @@
 package com.jjang051.board.controller;
 
 import com.jjang051.board.dto.MemberDto;
+import com.jjang051.board.dto.ResultDto;
 import com.jjang051.board.dto.TestDto;
 import com.jjang051.board.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -55,11 +59,27 @@ public class MemberController {
     }
 
 
+//    @PostMapping("/duplicate-id")
+//    @ResponseBody
+//    public void duplicateId(@RequestBody MemberDto memberDto) {
+//        log.info("userId==={}",memberDto.getUserId());
+//        int result = memberService.duplicateId(memberDto.getUserId());
+//        log.info("result==={}",result);
+//    }
     @PostMapping("/duplicate-id")
     @ResponseBody
-    public Map<String,String> duplicateId(@RequestParam String userId) {
-        
-
+    public ResponseEntity<Object> duplicateId(@RequestParam String userId) {
+        log.info("userId==={}",userId);
+        int result = memberService.duplicateId(userId);
+        log.info("result==={}",result);
+        Map<String, String> map = new HashMap<>();
+        if(result>0) {
+            map.put("isOk", "fail");
+        } else {
+            map.put("isOk", "ok");
+        }
+        //return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(map);
     }
 
     @PostMapping("/body01")

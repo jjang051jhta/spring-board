@@ -10,4 +10,5 @@ public interface MemberDao {
     //메서드 정의민 하면 됨
     int signin(MemberDto memberDto);
 
+    int duplicateId(String userId);
 }

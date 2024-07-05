@@ -49,16 +49,28 @@
     $("#btn-duplicate").on("click",function(){
         //아이디값을 서버로 보내고
         //중복체크하고 다시 값을 내려주면 된다.
+        const sendData = {};
+        sendData.userId=$("input[name='userId']").val();  //{userId:"jjang051"}
+        console.log(sendData);
         $.ajax({
-            url:"/member/duplicate-id",
-            //data:JSON.stringify(sendData), // json 객체로 바꿔줌 {"name":"장성호","age":20}
-            data:sendData, // json 객체로 바꿔줌 {"name":"장성호","age":20}
-            contentType:"application/json",
+            url:"/member/duplicate-id?userId="+$("input[name='userId']").val(),
+            // data:JSON.stringify(sendData), // json 객체로 바꿔줌 {"name":"장성호","age":20}
+            // contentType:"application/json",
             method:"POST",
             success:function (res){
-                if(res.status==="ok") {
-                    alert("회원가입되었습니다.");
-                    location.href="/member/login";
+                console.log("res===",res);
+                if(res.isOk==="ok") {
+                    Swal.fire({
+                        title: "OK",
+                        text: "쓸 수 있는 아이디입니다.",
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "FAIL",
+                        text: "쓸 수 없는 아이디입니다.",
+                        icon: "error"
+                    });
                 }
             }
         });

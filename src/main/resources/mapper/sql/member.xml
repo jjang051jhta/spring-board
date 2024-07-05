@@ -7,4 +7,7 @@
         insert into member values(
         member_seq.nextval, #{userId}, #{userName},#{email},#{password},sysdate)
     </insert>
+    <select id="duplicateId" resultType="int" parameterType="string">
+        select count(*) as count from member where userId = #{userId}
+    </select>
 </mapper>

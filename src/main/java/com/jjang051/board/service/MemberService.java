@@ -20,4 +20,9 @@ public class MemberService {
     public int signin(MemberDto memberDto) {
         return memberDao.signin(memberDto);
     }
+
+    public int duplicateId(String userId) {
+        int result = memberDao.duplicateId(userId);
+        return result;
+    }
 }

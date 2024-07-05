@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head02('INFO','alien.png')}"></head>
+<header th:replace="~{fragment/header}"></header>
+
+<body>
+<div class="container">
+    <h1 class="mt-5 mb-5">INFO</h1>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td th:text="${infoMemberDto.userId}"></td>
+            </tr>
+            <tr>
+                <th>USER NAME</th>
+                <td th:text="${infoMemberDto.userName}"></td>
+            </tr>
+            <tr>
+                <th>EMAIL</th>
+                <td th:text="${infoMemberDto.email}"></td>
+            </tr>
+            <tr>
+                <th>REGDATE</th>
+                <td th:text="${infoMemberDto.regDate}"></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<script>
+
+</script>
+<script th:replace="~{fragment/footer}"></script>
+</body>
+</html>

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -181,12 +182,12 @@ public class MemberController {
             //다시 front로 넘기기
         bindingResult
                 .reject("loginFail","아이디 패스워드 확인해 주세요.");
-
             return "member/login";
         }
 
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("userName",loginMemberDto.getUserName());
+        httpSession.setAttribute("userId",loginMemberDto.getUserId());
         log.info("loginMemberDto==={}",loginMemberDto);
         return "redirect:/board/list";
     }
@@ -197,4 +198,31 @@ public class MemberController {
         httpSession.invalidate();
         return "redirect:/";
     }
+
+    @GetMapping("/info")
+    public String info(HttpServletRequest request,
+                       RedirectAttributes redirectAttributes) {
+        //1. 로그인 되어 있지 않을때 요청이 들어오면 login으로 보내기
+        //2. 로그인 되어 있으면 db에서 정보 조회해서 model에 실어서 내려 보내주기
+        HttpSession httpSession = request.getSession();
+        String userName = (String)httpSession.getAttribute("userName");
+        if(userName==null) {
+            AlertDto alertDto = AlertDto.builder()
+                    .title("LOGIN")
+                    .text("로그인 먼저 하세요.").icon("warning").build();
+            redirectAttributes.addFlashAttribute("alertDto", alertDto);
+            return "redirect:/member/login";
+        }
+        //memberService.info();
+        return "member/info-pass";
+    }
+
+    @PostMapping("/info")
+    public String infoProcess(@ModelAttribute MemberDto memberDto,Model model) {
+        //id, password
+        MemberDto infoMemberDto = memberService.info(memberDto);
+        model.addAttribute("infoMemberDto",infoMemberDto);
+        return "member/info";
+    }
+
 }

@@ -31,4 +31,9 @@ public class MemberService {
         MemberDto loginMemberDto = memberDao.login(memberDto);
         return loginMemberDto;
     }
+
+
+    public MemberDto info(MemberDto memberDto) {
+        return memberDao.info(memberDto);
+    }
 }

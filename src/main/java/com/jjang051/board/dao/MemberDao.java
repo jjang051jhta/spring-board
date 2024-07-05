@@ -14,4 +14,7 @@ public interface MemberDao {
     int duplicateId(String userId);
 
     MemberDto login(LoginDto memberDto);
+
+
+    MemberDto info(MemberDto memberDto);
 }

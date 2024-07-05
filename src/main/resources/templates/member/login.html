@@ -21,9 +21,9 @@
                     Looks good!
                 </div>
             </div>
-            <div th:if="${#fields.hasGlobalErrors()}">
-                <p class="field-error" th:each="error : ${#fields.globalErrors()}"
-                   th:text="${error}">전체 오류 메시지</p>
+            <div class="valid-feedback" th:if="${#fields.hasGlobalErrors()}"
+            th:text="${#fields.globalErrors()[0]}">
+                Looks good!
             </div>
             <div class="mt-3">
                 <button class="btn btn-primary">LOGIN</button>

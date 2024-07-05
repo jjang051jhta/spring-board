@@ -177,6 +177,13 @@ public class MemberController {
         }
 
         MemberDto loginMemberDto = memberService.login(loginDto);
+        if(loginMemberDto==null) {
+            //다시 front로 넘기기
+        bindingResult
+                .reject("loginFail","아이디 패스워드 확인해 주세요.");
+
+            return "member/login";
+        }
 
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("userName",loginMemberDto.getUserName());
@@ -184,4 +191,10 @@ public class MemberController {
         return "redirect:/board/list";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }

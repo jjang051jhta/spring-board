@@ -55,7 +55,12 @@ public class MemberController {
     }
 
 
+    @PostMapping("/duplicate-id")
+    @ResponseBody
+    public Map<String,String> duplicateId(@RequestParam String userId) {
+        
 
+    }
 
     @PostMapping("/body01")
     @ResponseBody
@@ -82,6 +87,7 @@ public class MemberController {
     @ResponseBody
     public String applicationjsonObject(@RequestBody TestDto testDto) {
         log.info("name==={}",testDto);
+        //타입을 갹체로 받으면 객체를 리턴해준다.
         return "applicationjson로 데이터 받아보기";
     }
 

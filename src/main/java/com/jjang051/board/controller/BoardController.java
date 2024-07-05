@@ -25,8 +25,6 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-
-
     @GetMapping("/write")
     public String write(Model model) {
         model.addAttribute("boardDto", new BoardDto());

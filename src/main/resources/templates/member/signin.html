@@ -4,7 +4,7 @@
 <body>
     <div class="container">
         <h1 class="mt-5 mb-5">SIGN IN</h1>
-        <form action="" th:action="@{/member/signin}" method="post" th:object="${memberDto}">
+        <form action="" th:action="@{/member/signin}" method="post" th:object="${memberDto}" id="signin-form">
             <div class="mb-3">
                 <label class="form-label">USER ID</label>
                 <input type="text" class="form-control" placeholder="ID를 쓰세요" th:field="*{userId}">
@@ -12,6 +12,10 @@
                     Looks good!
                 </div>
             </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" id="btn-duplicate">ID 중복체크</button>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">USER NAME</label>
                 <input type="text" class="form-control" placeholder="이름을 쓰세요" th:field="*{userName}">
@@ -38,21 +42,39 @@
                 <button class="btn btn-primary" type="button" id="btn-signin-ajax">SIGNIN-AJAX</button>
             </div>
         </form>
+
+
     </div>
 <script>
+    $("#btn-duplicate").on("click",function(){
+        //아이디값을 서버로 보내고
+        //중복체크하고 다시 값을 내려주면 된다.
+        $.ajax({
+            url:"/member/duplicate-id",
+            //data:JSON.stringify(sendData), // json 객체로 바꿔줌 {"name":"장성호","age":20}
+            data:sendData, // json 객체로 바꿔줌 {"name":"장성호","age":20}
+            contentType:"application/json",
+            method:"POST",
+            success:function (res){
+                if(res.status==="ok") {
+                    alert("회원가입되었습니다.");
+                    location.href="/member/login";
+                }
+            }
+        });
+    })
     $("#btn-signin-ajax").on("click",function(){
-        //const sendData = $("form").serialize();
-        ///member/signin?userId=aaa&userName=jkfjk&password=yyuuyfuy&email=ifudiu
-        const sendData = {};
-        sendData.userId=$("input[name='userId']").val();
-        sendData.userName=$("input[name='userName']").val();
-        sendData.email=$("input[name='email']").val();
-        sendData.password=$("input[name='password']").val();
+        const sendData = $("form").serializeJSON(); //{}
+        console.log(sendData);
+        // sendData.userId=$("input[name='userId']").val();
+        // sendData.userName=$("input[name='userName']").val();
+        // sendData.email=$("input[name='email']").val();
+        // sendData.password=$("input[name='password']").val();
         //console.log(sendData);
-
         $.ajax({
             url:"/member/signin-ajax",
-            data:JSON.stringify(sendData),
+            //data:JSON.stringify(sendData), // json 객체로 바꿔줌 {"name":"장성호","age":20}
+            data:sendData, // json 객체로 바꿔줌 {"name":"장성호","age":20}
             contentType:"application/json",
             method:"POST",
             success:function (res){

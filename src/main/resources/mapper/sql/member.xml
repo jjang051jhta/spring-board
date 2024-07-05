@@ -10,4 +10,8 @@
     <select id="duplicateId" resultType="int" parameterType="string">
         select count(*) as count from member where userId = #{userId}
     </select>
+    <select id="login" parameterType="com.jjang051.board.dto.MemberDto"
+            resultType="com.jjang051.board.dto.MemberDto">
+        select * from member where userId = #{userId} and password = #{password}
+    </select>
 </mapper>

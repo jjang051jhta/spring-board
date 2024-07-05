@@ -1,19 +1,22 @@
 package com.jjang051.board.controller;
 
-import com.jjang051.board.dto.MemberDto;
-import com.jjang051.board.dto.ResultDto;
-import com.jjang051.board.dto.TestDto;
+import com.jjang051.board.dto.*;
 import com.jjang051.board.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,11 +27,16 @@ import java.util.Objects;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+
+
+
+
     @GetMapping("/signin")
     public String signin(Model model) {
         model.addAttribute("memberDto",new MemberDto());
         return "member/signin";
     }
+
 
     @PostMapping("/signin")
     public String signinProcess(@Valid @ModelAttribute MemberDto memberDto,
@@ -73,13 +81,44 @@ public class MemberController {
         int result = memberService.duplicateId(userId);
         log.info("result==={}",result);
         Map<String, String> map = new HashMap<>();
+        AlertDto alertDto = null;
+        ResultDto resultDto = null;
         if(result>0) {
-            map.put("isOk", "fail");
+            //map.put("isOk", "fail");
+            alertDto = AlertDto.builder()
+                    .text("쓸 수 없는 아이디입니다.")
+                    .icon("error")
+                    .title("fail").build();
+            resultDto =
+                    ResultDto.builder()
+                            .httpStatus(HttpStatus.OK)
+                            .resultData(alertDto)
+                            .message("fail")
+                            .build();
         } else {
-            map.put("isOk", "ok");
+            //map.put("isOk", "ok");
+            alertDto = AlertDto.builder()
+                    .text("쓸 수 있는 아이디입니다.")
+                    .icon("success")
+                    .title("ok").build();
+            resultDto =
+                    ResultDto.builder()
+                            .httpStatus(HttpStatus.OK)
+                            .resultData(alertDto)
+                            .message("ok")
+                            .build();
         }
-        //return new ResponseEntity<>(HttpStatus.OK);
-        return ResponseEntity.ok(map);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(
+                new MediaType("application","json",
+                        Charset.forName("utf-8")));
+
+        //return new ResponseEntity<>(map,httpHeaders,HttpStatus.OK);
+        // rest api
+
+
+        return new ResponseEntity<>(resultDto,HttpStatus.OK);
+        //return ResponseEntity.ok(map);
     }
 
     @PostMapping("/body01")
@@ -119,5 +158,30 @@ public class MemberController {
         return "applicationjson로 데이터 받아보기";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("loginDto",new LoginDto());
+        return "member/login";
+    }
+    @PostMapping("/login")
+    public String loginProcess(@Valid @ModelAttribute LoginDto loginDto,
+                               BindingResult bindingResult,
+                               HttpServletRequest request
+    ) {
+        log.info("memberDto==={}",loginDto.toString());
+        if(bindingResult.hasErrors()) {
+            //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.
+            //이때 이름을 작성하지 않았으므로 MemberDto의 첫글자를 소문자로 바꾸어서 전달한다.
+            log.info("error");
+            return "member/login";
+        }
+
+        MemberDto loginMemberDto = memberService.login(loginDto);
+
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute("userName",loginMemberDto.getUserName());
+        log.info("loginMemberDto==={}",loginMemberDto);
+        return "redirect:/board/list";
+    }
 
 }

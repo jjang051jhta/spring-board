@@ -1,18 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
-          th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../../static/css/common.css"
-          th:href="@{/css/common.css}">
-
-    <script src="../../static/js/bootstrap.bundle.min.js"
-            th:src="@{/js/bootstrap.bundle.min.js}"
-    ></script>
-
-</head>
+<html lang="en">
+<head th:replace="~{fragment/head :: header02('SIGNIN','alien02.png')}"></head>
+<header th:replace="~{fragment/header}"></header>
 <body>
 <div class="container">
     <h1 class="mb-5 mt-5">DELETE</h1>

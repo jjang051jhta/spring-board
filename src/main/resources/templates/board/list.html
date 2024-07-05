@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragment/header :: header02('LIST','alien02.png')}"></head>
+<html lang="en">
+<head th:replace="~{fragment/head :: header02('SIGNIN','alien02.png')}"></head>
+<header th:replace="~{fragment/header}"></header>
 <body>
 <div class="container">
     <h1 class="mb-5 mt-5">LIST</h1>
+    <h1 class="mb-5 mt-5" th:text="${session.userName}">장성호</h1>
     <table class="table table-striped">
         <colgroup>
             <col style="width:80px">

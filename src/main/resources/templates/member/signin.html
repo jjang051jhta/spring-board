@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{fragment/header :: header02('SIGNIN','alien02.png')}"></head>
+<head th:replace="~{fragment/head :: header02('SIGNIN','alien02.png')}"></head>
+<header th:replace="~{fragment/header}"></header>
 <body>
     <div class="container">
         <h1 class="mt-5 mb-5">SIGN IN</h1>
@@ -59,19 +60,24 @@
             method:"POST",
             success:function (res){
                 console.log("res===",res);
-                if(res.isOk==="ok") {
-                    Swal.fire({
-                        title: "OK",
-                        text: "쓸 수 있는 아이디입니다.",
-                        icon: "success"
-                    });
-                } else {
-                    Swal.fire({
-                        title: "FAIL",
-                        text: "쓸 수 없는 아이디입니다.",
-                        icon: "error"
-                    });
-                }
+                Swal.fire({
+                    title: res.resultData.title,
+                    text: res.resultData.text,
+                    icon: res.resultData.icon
+                });
+                // if(res.message==="ok") {
+                //     Swal.fire({
+                //         title: "OK",
+                //         text: "쓸 수 있는 아이디입니다.",
+                //         icon: "success"
+                //     });
+                // } else {
+                //     Swal.fire({
+                //         title: "FAIL",
+                //         text: "쓸 수 없는 아이디입니다.",
+                //         icon: "error"
+                //     });
+                // }
             }
         });
     })

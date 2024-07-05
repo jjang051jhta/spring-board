@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.tymeleaf.org">
+
+<head th:fragment="head01">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/common.css"
+          th:href="@{/css/common.css}">
+
+    <script src="../../static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<head th:fragment="head02(title, favicon)">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/images/common/alien.png"
+          th:href="@{|/images/common/${favicon}|}"
+    >
+
+    <title th:text="${title}">TITLE</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/common.css"
+          th:href="@{/css/common.css}">
+
+    <script src="../../static/js/jquery-3.7.1.min.js"
+            th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script src="../../static/js/jquery.serialize-object.min.js"
+            th:src="@{/js/jquery.serialize-object.min.js}"></script>
+    <script src="../../static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"
+    >
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+
+
+</html>

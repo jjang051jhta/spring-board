@@ -1,6 +1,7 @@
 package com.jjang051.board.service;
 
 import com.jjang051.board.dao.MemberDao;
+import com.jjang051.board.dto.LoginDto;
 import com.jjang051.board.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,10 @@ public class MemberService {
     public int duplicateId(String userId) {
         int result = memberDao.duplicateId(userId);
         return result;
+    }
+
+    public MemberDto login(LoginDto memberDto) {
+        MemberDto loginMemberDto = memberDao.login(memberDto);
+        return loginMemberDto;
     }
 }

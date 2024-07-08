@@ -15,11 +15,16 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberDao memberDao;
-
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public int signin(MemberDto memberDto) {
-
-        return memberDao.signin(memberDto);
+        MemberDto signInDto = MemberDto.builder()
+                .email(memberDto.getEmail())
+                .userId(memberDto.getUserId())
+                .userName(memberDto.getUserName())
+                .password(bCryptPasswordEncoder.encode(memberDto.getPassword()))
+                .build();
+        return memberDao.signin(signInDto);
     }
 
     public int duplicateId(String userId) {
@@ -28,7 +33,7 @@ public class MemberService {
     }
 
     public MemberDto login(LoginDto memberDto) {
-        MemberDto loginMemberDto = memberDao.login(memberDto);
+        MemberDto loginMemberDto = memberDao.login(memberDto.getUserId());
         return loginMemberDto;
     }
 

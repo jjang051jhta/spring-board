@@ -48,6 +48,17 @@ public class SecurityConfig {
                 .permitAll()
                 .anyRequest().authenticated()
         );
+        httpSecurity.formLogin((auth)->
+                auth
+                        .loginPage("/member/login")           // get
+                        .loginProcessingUrl("/member/login")  // post
+                        .usernameParameter("userId")          // username
+                        .passwordParameter("password")        // password
+                        .permitAll()
+        );
+
+        //security를 쓰면 로그인을 내가 하는게 아니라 시큐리티가 시켜줌...
+
         return httpSecurity.build();
     }
 

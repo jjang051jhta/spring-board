@@ -12,7 +12,7 @@
     </select>
     <select id="login" parameterType="com.jjang051.board.dto.MemberDto"
             resultType="com.jjang051.board.dto.MemberDto">
-        select * from member where userId = #{userId} and password = #{password}
+        select * from member where userId = #{userId}
     </select>
 
     <select id="info" parameterType="com.jjang051.board.dto.MemberDto"

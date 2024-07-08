@@ -33,9 +33,6 @@ import java.util.Objects;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
 
     @GetMapping("/signin")
     public String signin(Model model) {
@@ -48,7 +45,7 @@ public class MemberController {
     public String signinProcess(@Valid @ModelAttribute MemberDto memberDto,
                                 BindingResult bindingResult) {
 
-        //log.info("암호화==={}",bCryptPasswordEncoder.encode("1234"));
+        //log.info("암호화==={}",bCryptPasswordEncoder.encode(memberDto.getPassword()));
 
         if(bindingResult.hasErrors()) {
             //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.

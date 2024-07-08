@@ -13,7 +13,7 @@ public interface MemberDao {
 
     int duplicateId(String userId);
 
-    MemberDto login(LoginDto memberDto);
+    MemberDto login(String userId);
 
 
     MemberDto info(MemberDto memberDto);

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @ToString
 public class MemberDto {
     private int id;
-    private LocalDateTime regDate;
+    private String regDate;
 
     @NotBlank(message = "user id는 필수입력사항입니다.")
     @Size(min = 5,max = 20, message = "5글자 이상 20글자 이하로 작성해 주세요")
@@ -35,8 +35,10 @@ public class MemberDto {
     @NotBlank(message = "password는 필수입력사항입니다.")
     private String password;
 
-    public MemberDto(LocalDateTime regDate, String userId, String userName, String email, String password) {
-        this.regDate = regDate;
+
+
+    @Builder
+    public MemberDto(String userId, String userName, String email, String password) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;

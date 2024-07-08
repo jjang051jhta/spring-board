@@ -22,8 +22,10 @@ public class MemberService {
                 .email(memberDto.getEmail())
                 .userId(memberDto.getUserId())
                 .userName(memberDto.getUserName())
+                .role("ADMIN")
                 .password(bCryptPasswordEncoder.encode(memberDto.getPassword()))
                 .build();
+        log.info("signInDto==={}",signInDto);
         return memberDao.signin(signInDto);
     }
 

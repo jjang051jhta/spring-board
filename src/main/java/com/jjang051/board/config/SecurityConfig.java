@@ -53,6 +53,8 @@ public class SecurityConfig {
 
                 )
                 .permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/mypage/**").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated()
         );
         httpSecurity.formLogin((auth)->

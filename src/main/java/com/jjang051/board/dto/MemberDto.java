@@ -36,12 +36,16 @@ public class MemberDto {
     private String password;
 
 
+    //@NotBlank(message = "role은 필수입력사항입니다.")
+    private String role;
+
 
     @Builder
-    public MemberDto(String userId, String userName, String email, String password) {
+    public MemberDto(String userId, String userName, String email, String password, String role) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 }

@@ -5,6 +5,8 @@ import com.jjang051.board.dto.LoginDto;
 import com.jjang051.board.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,11 +16,9 @@ public class MemberService {
 
     private final MemberDao memberDao;
 
-//    public MemberService(MemberDao memberDao) {
-//        this.memberDao = memberDao;
-//    }
 
     public int signin(MemberDto memberDto) {
+
         return memberDao.signin(memberDto);
     }
 

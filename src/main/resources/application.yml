@@ -15,7 +15,13 @@ spring:
       enabled: true
     restart:
       enabled: true
-
+  
+  #시큐리티 기본 설정
+  security:
+    user:
+      name: jjang051
+      password: 1234
+      roles: USER, ADMIN
 
 mybatis:
   config-location: classpath:mapper/config/config.xml

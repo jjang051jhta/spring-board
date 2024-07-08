@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +33,7 @@ import java.util.Objects;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 
@@ -42,13 +47,16 @@ public class MemberController {
     @PostMapping("/signin")
     public String signinProcess(@Valid @ModelAttribute MemberDto memberDto,
                                 BindingResult bindingResult) {
+
+        //log.info("암호화==={}",bCryptPasswordEncoder.encode("1234"));
+
         if(bindingResult.hasErrors()) {
             //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.
             //이때 이름을 작성하지 않았으므로 MemberDto의 첫글자를 소문자로 바꾸어서 전달한다.
             return "member/signin";
         }
         log.info("memberDto==={}",memberDto.toString());
-
+        memberDto.setPassword(memberDto.getPassword());
         memberService.signin(memberDto);
         return "redirect:/member/login";
     }
@@ -222,6 +230,15 @@ public class MemberController {
         //id, password
         MemberDto infoMemberDto = memberService.info(memberDto);
         model.addAttribute("infoMemberDto",infoMemberDto);
+//        String str = infoMemberDto.getRegDate();
+//        log.info("infoMemberDto.getRegDate()==={}",str);
+//        //LocalDateTime localDateTime = LocalDateTime.from(LocalDateTime);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+//        log.info("localDateTime==={}",localDateTime);
+//        model.addAttribute("regDate", localDateTime);
+
+
         return "member/info";
     }
 

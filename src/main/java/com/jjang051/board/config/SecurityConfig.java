@@ -48,7 +48,10 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/",
                         "/member/login",
-                        "/member/signin")
+                        "/member/signin",
+                        "/member/duplicate-id"
+
+                )
                 .permitAll()
                 .anyRequest().authenticated()
         );

@@ -174,6 +174,7 @@ public class MemberController {
                                BindingResult bindingResult,
                                HttpServletRequest request
     ) {
+        log.info("=====================================================");
         log.info("memberDto==={}",loginDto.toString());
         if(bindingResult.hasErrors()) {
             //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.

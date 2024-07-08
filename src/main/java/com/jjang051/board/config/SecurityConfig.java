@@ -66,6 +66,12 @@ public class SecurityConfig {
                         // defaultSuccessUrl러 넘어감
                     .permitAll()
         );
+        httpSecurity.logout((auth)->
+            auth
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+        );
         //httpSecurity.csrf((auth)->auth.disable());
 
         //security를 쓰면 로그인을 내가 하는게 아니라 시큐리티가 시켜줌...

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <header class=" container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
     <div class="col-md-3 mb-2 mb-md-0">
         <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
@@ -16,12 +18,21 @@
         <li><a href="#" class="nav-link px-2">About</a></li>
     </ul>
 
-    <div class="col-md-3 text-end"  th:if="${session.userName}">
+<!--    <div class="col-md-3 text-end"  th:if="${session.userName}">-->
+<!--        <a href="" th:href="@{/member/info}" class="btn btn-outline-primary me-2"-->
+<!--        th:text="${session.userName}">장성호</a>-->
+<!--        <a href="" th:href="@{/member/logout}"  class="btn btn-primary">LOG OUT</a>-->
+<!--    </div>-->
+<!--    <div class="col-md-3 text-end" th:unless="${session.userName}">-->
+<!--        <a href="" th:href="@{/member/login}" class="btn btn-outline-primary me-2">Login</a>-->
+<!--        <a href="" th:href="@{/member/signin}" class="btn btn-primary">Sign-up</a>-->
+<!--    </div>-->
+    <div class="col-md-3 text-end"  sec:authorize="isAuthenticated()">
         <a href="" th:href="@{/member/info}" class="btn btn-outline-primary me-2"
-        th:text="${session.userName}">장성호</a>
+           th:text="${#authentication.principal.memberDto.userName}">장성호</a>
         <a href="" th:href="@{/member/logout}"  class="btn btn-primary">LOG OUT</a>
     </div>
-    <div class="col-md-3 text-end" th:unless="${session.userName}">
+    <div class="col-md-3 text-end" sec:authorize="!isAuthenticated()">
         <a href="" th:href="@{/member/login}" class="btn btn-outline-primary me-2">Login</a>
         <a href="" th:href="@{/member/signin}" class="btn btn-primary">Sign-up</a>
     </div>

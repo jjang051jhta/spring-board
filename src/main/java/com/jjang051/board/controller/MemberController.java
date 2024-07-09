@@ -12,12 +12,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.nio.charset.Charset;
 import java.time.LocalDate;
@@ -174,28 +178,22 @@ public class MemberController {
                                BindingResult bindingResult,
                                HttpServletRequest request
     ) {
-        log.info("=====================================================");
-        log.info("memberDto==={}",loginDto.toString());
         if(bindingResult.hasErrors()) {
-            //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.
-            //이때 이름을 작성하지 않았으므로 MemberDto의 첫글자를 소문자로 바꾸어서 전달한다.
-            log.info("error");
             return "member/login";
         }
-
         MemberDto loginMemberDto = memberService.login(loginDto);
         if(loginMemberDto==null) {
-            //다시 front로 넘기기
         bindingResult
                 .reject("loginFail","아이디 패스워드 확인해 주세요.");
             return "member/login";
         }
+        return "forward:/member/login_process";
+    }
 
-        HttpSession httpSession = request.getSession();
-        httpSession.setAttribute("userName",loginMemberDto.getUserName());
-        httpSession.setAttribute("userId",loginMemberDto.getUserId());
-        log.info("loginMemberDto==={}",loginMemberDto);
-        return "redirect:/board/list";
+    @PostMapping("/login-fail")
+    public String loginfail(@Valid LoginDto loginDto, BindingResult bindingResult){
+        log.info("loginfail===");
+        return "member/login";
     }
 
     @GetMapping("/logout")

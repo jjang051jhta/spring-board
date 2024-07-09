@@ -20,11 +20,13 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         MemberDto memberDto = memberDao.login(userId); //아이디만 검증하면 됨...
         //여기에 내가 로그인 하는 방법을 써놓으면 됨...
-        log.info("memberDto.getRole()==={}",memberDto.getRole());
         if(memberDto!=null) {
             return new CustomUserDetails(memberDto);
-            //CustomUserDetails는 읽기 전용 Dto임 여기에 username과 password role 정보등등이 들어감...
         }
-        return null;
+        throw new UsernameNotFoundException("해당하는 멤버가 없습니다.");
+
+
+
+        //return null;
     }
 }

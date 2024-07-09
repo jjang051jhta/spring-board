@@ -3,6 +3,7 @@ package com.jjang051.board.service;
 import com.jjang051.board.dao.MemberDao;
 import com.jjang051.board.dto.LoginDto;
 import com.jjang051.board.dto.MemberDto;
+import com.jjang051.board.dto.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,16 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public int signin(MemberDto memberDto) {
+
         MemberDto signInDto = MemberDto.builder()
                 .email(memberDto.getEmail())
                 .userId(memberDto.getUserId())
                 .userName(memberDto.getUserName())
-                .role("ADMIN")
+                .role(Role.ADMIN.getRole())
                 .password(bCryptPasswordEncoder.encode(memberDto.getPassword()))
                 .build();
-        log.info("signInDto==={}",signInDto);
+        log.info("signInDto==={}",signInDto.getRole());
+        log.info("Role.ADMIN.name()==={}",Role.ADMIN.getRole());
         return memberDao.signin(signInDto);
     }
 

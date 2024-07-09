@@ -1,6 +1,8 @@
 package com.jjang051.board.config;
 
 
+import com.jjang051.board.handler.UserLoginFailHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,14 +11,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Controller;
 
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     //bean 등록  스프링 컨테이너의 관리하에 들어가게 하고 싶다.
+
+
+    //private final UserLoginFailHandler userLoginFailHandler;
+
+    private final AuthenticationFailureHandler customFailureHandler;
+
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -53,22 +63,18 @@ public class SecurityConfig {
 
                 )
                 .permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
                 .requestMatchers("/mypage/**").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated()
         );
         httpSecurity.formLogin((auth)->
                 auth
                     .loginPage("/member/login")           // get
-                    .loginProcessingUrl("/member/login")  // post
+                    .loginProcessingUrl("/member/login_process")  // post
                     .usernameParameter("userId")          // username
                     .passwordParameter("password")        // password
                     .defaultSuccessUrl("/board/list",true)
-
-                        //defaultSuccessUrl 은 성공했을때 넘어가는 page인데  그 전 페이지로 넘어감
-                        // 이때 이전에 오류나거나 했으면 거기로 넘어갈 수 있음
-                        // true를 넣어주면 기존에 있던 이전 페이지로 넘어가는거 무시하고 늘
-                        // defaultSuccessUrl러 넘어감
+                    .failureHandler(customFailureHandler)
                     .permitAll()
         );
         httpSecurity.logout((auth)->

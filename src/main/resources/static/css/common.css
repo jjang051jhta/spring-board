@@ -2,3 +2,18 @@
     display: block !important;
     color: #f00;
 }
+.error_404 {
+position: absolute;
+left: 0;
+top:0;
+width:100vw;
+height: 100vh;
+background-image: url("../images/common/404.jpg");
+background-size: cover;
+}
+.error_404 > a {
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    bottom: 100px;
+}

@@ -13,9 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Controller;
 
+import javax.sql.DataSource;
 import java.util.UUID;
 
 
@@ -31,7 +34,15 @@ public class SecurityConfig {
 
     private final AuthenticationFailureHandler customFailureHandler;
 
+    private final DataSource dataSource;
 
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return  jdbcTokenRepository;
+    }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -51,6 +62,8 @@ public class SecurityConfig {
                 )
         );
     }
+
+
 
     //16개 걸쳐서 controller로 전달됨....
     @Bean
@@ -87,6 +100,15 @@ public class SecurityConfig {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
+        );
+
+        httpSecurity.rememberMe((rememberMe) -> rememberMe
+                //.rememberMeParameter("remember-me")
+                .tokenRepository(persistentTokenRepository())
+                .key(UUID.randomUUID().toString())
+                .userDetailsService(customUserDetailService)
+                .tokenValiditySeconds(60*60*24*7)
+                .alwaysRemember(true)
         );
 
         //httpSecurity.csrf((auth)->auth.disable());

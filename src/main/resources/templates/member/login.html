@@ -22,6 +22,13 @@
             </div>
         </div>
 
+        <div class="form-check text-start my-3">
+            <input class="form-check-input" type="checkbox" name="remember-me" value="remember-me" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Remember me
+            </label>
+        </div>
+
         <div class="valid-feedback" th:if="${param.error}" th:text="${param.msg}">
             Looks good!
         </div>

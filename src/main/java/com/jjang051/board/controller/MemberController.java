@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -237,6 +239,28 @@ public class MemberController {
             return "member/info";
         }
         //throw new RuntimeException("오류입니다.");
+        throw new BadRequestException(ErrorCode.BAD_REQUEST);
+    }
+
+    @GetMapping("/delete")
+    public String delete() {
+        return "member/delete-pass";
+    }
+
+    @PostMapping("/delete")
+    public String deleteProcess(@ModelAttribute MemberDto memberDto,
+                                @AuthenticationPrincipal UserDetails userDetails,
+                                Model model) {
+
+        if (bCryptPasswordEncoder.matches(memberDto.getPassword(),
+                userDetails.getPassword())) {
+            int result = memberService.deleteMember(memberDto);
+            log.info("result==={}",result);
+            if(result>0) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+                return "redirect:/";
+            }
+        }
         throw new BadRequestException(ErrorCode.BAD_REQUEST);
     }
 }

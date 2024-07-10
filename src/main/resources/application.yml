@@ -2,6 +2,7 @@ server:
   servlet:
     session:
       timeout: 1800
+      #tracking-modes: cookie
 
 
 spring:
@@ -26,3 +27,4 @@ spring:
 mybatis:
   config-location: classpath:mapper/config/config.xml
   mapper-locations: classpath:mapper/sql/**/*.xml
+  type-aliases-package: com.jjang051.board.dto

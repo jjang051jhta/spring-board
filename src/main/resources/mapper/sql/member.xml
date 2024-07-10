@@ -19,6 +19,7 @@
             resultType="com.jjang051.board.dto.MemberDto">
         select * from member where userId = #{userId}
     </select>
-
-
+    <delete id="deleteMember" parameterType="MemberDto">
+        delete from member where userId = #{userId}
+    </delete>
 </mapper>

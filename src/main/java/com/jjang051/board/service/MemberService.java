@@ -46,4 +46,8 @@ public class MemberService {
     public MemberDto info(MemberDto memberDto) {
         return memberDao.info(memberDto);
     }
+
+    public int deleteMember(MemberDto memberDto) {
+        return memberDao.deleteMember(memberDto);
+    }
 }

@@ -2,6 +2,7 @@ package com.jjang051.board.config;
 
 
 import com.jjang051.board.handler.UserLoginFailHandler;
+import com.jjang051.board.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
+
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +27,7 @@ public class SecurityConfig {
 
 
     //private final UserLoginFailHandler userLoginFailHandler;
+    private final CustomUserDetailService customUserDetailService;
 
     private final AuthenticationFailureHandler customFailureHandler;
 
@@ -67,6 +71,7 @@ public class SecurityConfig {
                 .requestMatchers("/mypage/**").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated()
         );
+
         httpSecurity.formLogin((auth)->
                 auth
                     .loginPage("/member/login")           // get
@@ -83,7 +88,7 @@ public class SecurityConfig {
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
         );
-        
+
         //httpSecurity.csrf((auth)->auth.disable());
 
         //security를 쓰면 로그인을 내가 하는게 아니라 시큐리티가 시켜줌...

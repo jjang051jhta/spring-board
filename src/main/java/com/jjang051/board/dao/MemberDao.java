@@ -17,4 +17,6 @@ public interface MemberDao {
 
 
     MemberDto info(MemberDto memberDto);
+
+    int deleteMember(MemberDto memberDto);
 }

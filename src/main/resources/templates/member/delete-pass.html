@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head02('SIGNIN','alien02.png')}"></head>
+<header th:replace="~{fragment/header}"></header>
+
+<body>
+<div class="container">
+    <h1 class="mb-5 mt-5">INFO</h1>
+    <!--    <h2 th:text="${#authentication.name}"></h2>-->
+    <!--    <h2 th:text="${#authentication.authorities}"></h2>-->
+    <!--    <h2 th:text="${#authentication.authenticated}"></h2>-->
+    <form action="" th:action="@{/member/delete}" method="post">
+
+        <input type="hidden" name="userId" value="27"
+               th:value="${#authentication.name}">
+        <div class="mb-3">
+            <label class="form-label">PASSWORD</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+        <div class="valid-feedback" th:if="${errorDto}"
+             th:text="${errorDto.errorMessage}">
+            비밀번호 오류입니다.
+        </div>
+
+        <div class="mt-3">
+            <button class="btn btn-danger">INFO</button>
+        </div>
+    </form>
+</div>
+<head th:replace="~{fragment/footer}"></head>
+
+</body>
+</html>

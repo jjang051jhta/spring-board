@@ -1,5 +1,6 @@
 package com.jjang051.board.exception;
 
+import com.jjang051.board.dto.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +18,11 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(MemberException.class)
     @ResponseBody
-    public String memberExceptionHandling(MemberException e) {
-        return e.getErrorCode();
-    }
+    public ErrorDto memberExceptionHandling(MemberException e) {
+        return ErrorDto.builder()
+                .errorCode(e.getErrorCode())
+                .errorMessage(e.getErrorCode().getMessage())
+                .build();
 
+    }
 }

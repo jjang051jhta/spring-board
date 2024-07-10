@@ -236,6 +236,6 @@ public class MemberController {
 
         }
         //throw new RuntimeException("오류입니다.");
-        throw new MemberException(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+        throw new MemberException(ErrorCode.NOT_FOUND);
     }
 }

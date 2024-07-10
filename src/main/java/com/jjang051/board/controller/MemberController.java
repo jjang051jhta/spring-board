@@ -1,6 +1,8 @@
 package com.jjang051.board.controller;
 
+import com.jjang051.board.code.ErrorCode;
 import com.jjang051.board.dto.*;
+import com.jjang051.board.exception.MemberException;
 import com.jjang051.board.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.WebAttributes;
@@ -37,10 +41,11 @@ import java.util.Objects;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/signin")
     public String signin(Model model) {
-        model.addAttribute("memberDto",new MemberDto());
+        model.addAttribute("memberDto", new MemberDto());
         return "member/signin";
     }
 
@@ -51,12 +56,12 @@ public class MemberController {
 
         //log.info("암호화==={}",bCryptPasswordEncoder.encode(memberDto.getPassword()));
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             //@ModelAttribute("객체 이름 적는 곳") MemberDto memberDto에 넘어온 값을 가지고 돌아간다.
             //이때 이름을 작성하지 않았으므로 MemberDto의 첫글자를 소문자로 바꾸어서 전달한다.
             return "member/signin";
         }
-        log.info("memberDto==={}",memberDto.toString());
+        log.info("memberDto==={}", memberDto.toString());
         memberDto.setPassword(memberDto.getPassword());
         memberService.signin(memberDto);
         return "redirect:/member/login";
@@ -64,20 +69,20 @@ public class MemberController {
 
     @PostMapping("/signin-ajax")
     @ResponseBody
-    public Map<String,String> signinProcessAjax(@RequestBody MemberDto memberDto) {
-        log.info("memberDto==={}",memberDto.toString());
+    public Map<String, String> signinProcessAjax(@RequestBody MemberDto memberDto) {
+        log.info("memberDto==={}", memberDto.toString());
         int result = memberService.signin(memberDto);
-        Map<String,String> resultMap = new HashMap<>();
-        if(result>0) {
-            resultMap.put("status","ok");
+        Map<String, String> resultMap = new HashMap<>();
+        if (result > 0) {
+            resultMap.put("status", "ok");
         } else {
-            resultMap.put("status","fail");
+            resultMap.put("status", "fail");
         }
         return resultMap;
     }
 
 
-//    @PostMapping("/duplicate-id")
+    //    @PostMapping("/duplicate-id")
 //    @ResponseBody
 //    public void duplicateId(@RequestBody MemberDto memberDto) {
 //        log.info("userId==={}",memberDto.getUserId());
@@ -87,13 +92,13 @@ public class MemberController {
     @PostMapping("/duplicate-id")
     @ResponseBody
     public ResponseEntity<Object> duplicateId(@RequestParam String userId) {
-        log.info("userId==={}",userId);
+        log.info("userId==={}", userId);
         int result = memberService.duplicateId(userId);
-        log.info("result==={}",result);
+        log.info("result==={}", result);
         Map<String, String> map = new HashMap<>();
         AlertDto alertDto = null;
         ResultDto resultDto = null;
-        if(result>0) {
+        if (result > 0) {
             //map.put("isOk", "fail");
             alertDto = AlertDto.builder()
                     .text("쓸 수 없는 아이디입니다.")
@@ -120,42 +125,42 @@ public class MemberController {
         }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(
-                new MediaType("application","json",
+                new MediaType("application", "json",
                         Charset.forName("utf-8")));
 
         //return new ResponseEntity<>(map,httpHeaders,HttpStatus.OK);
         // rest api
 
 
-        return new ResponseEntity<>(resultDto,HttpStatus.OK);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
         //return ResponseEntity.ok(map);
     }
 
     @PostMapping("/body01")
     @ResponseBody
     public String xwwwformurlencoded(String name) {
-        log.info("name==={}",name);
+        log.info("name==={}", name);
         return "httpbody로 데이터 받아보기";
     }
 
     @PostMapping("/body02")
     @ResponseBody
     public String textplain(@RequestBody String name) {
-        log.info("name==={}",name);
+        log.info("name==={}", name);
         return "textplain로 데이터 받아보기";
     }
 
     @PostMapping("/body03")
     @ResponseBody
     public String applicationjson(@RequestBody String name) {
-        log.info("name==={}",name);
+        log.info("name==={}", name);
         return "applicationjson로 데이터 받아보기";
     }
 
     @PostMapping("/body04")
     @ResponseBody
     public String applicationjsonObject(@RequestBody TestDto testDto) {
-        log.info("name==={}",testDto);
+        log.info("name==={}", testDto);
         //타입을 갹체로 받으면 객체를 리턴해준다.
         return "applicationjson로 데이터 받아보기";
     }
@@ -164,34 +169,36 @@ public class MemberController {
     @PostMapping("/body05")
     @ResponseBody
     public String applicationjsonObject02(@RequestBody TestDto testDto) {
-        log.info("name==={}",testDto);
+        log.info("name==={}", testDto);
         return "applicationjson로 데이터 받아보기";
     }
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("loginDto",new LoginDto());
+        model.addAttribute("loginDto", new LoginDto());
         return "member/login";
     }
+
     @PostMapping("/login")
     public String loginProcess(@Valid @ModelAttribute LoginDto loginDto,
                                BindingResult bindingResult,
                                HttpServletRequest request
     ) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "member/login";
         }
         MemberDto loginMemberDto = memberService.login(loginDto);
-        if(loginMemberDto==null) {
-        bindingResult
-                .reject("loginFail","아이디 패스워드 확인해 주세요.");
+        if (loginMemberDto == null) {
+            bindingResult
+                    .reject("loginFail", "아이디 패스워드 확인해 주세요.");
             return "member/login";
         }
         return "forward:/member/login_process";
     }
 
+
     @PostMapping("/login-fail")
-    public String loginfail(@Valid LoginDto loginDto, BindingResult bindingResult){
+    public String loginfail(@Valid LoginDto loginDto, BindingResult bindingResult) {
         log.info("loginfail===");
         return "member/login";
     }
@@ -206,36 +213,29 @@ public class MemberController {
     @GetMapping("/info")
     public String info(HttpServletRequest request,
                        RedirectAttributes redirectAttributes) {
-        //1. 로그인 되어 있지 않을때 요청이 들어오면 login으로 보내기
-        //2. 로그인 되어 있으면 db에서 정보 조회해서 model에 실어서 내려 보내주기
-        HttpSession httpSession = request.getSession();
-        String userName = (String)httpSession.getAttribute("userName");
-        if(userName==null) {
-            AlertDto alertDto = AlertDto.builder()
-                    .title("LOGIN")
-                    .text("로그인 먼저 하세요.").icon("warning").build();
-            redirectAttributes.addFlashAttribute("alertDto", alertDto);
-            return "redirect:/member/login";
-        }
         //memberService.info();
         return "member/info-pass";
     }
 
     @PostMapping("/info")
-    public String infoProcess(@ModelAttribute MemberDto memberDto,Model model) {
+    public String infoProcess(@ModelAttribute MemberDto memberDto,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) {
         //id, password
-        MemberDto infoMemberDto = memberService.info(memberDto);
-        model.addAttribute("infoMemberDto",infoMemberDto);
-//        String str = infoMemberDto.getRegDate();
-//        log.info("infoMemberDto.getRegDate()==={}",str);
-//        //LocalDateTime localDateTime = LocalDateTime.from(LocalDateTime);
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
-//        log.info("localDateTime==={}",localDateTime);
-//        model.addAttribute("regDate", localDateTime);
+        //패스워드비교
+        log.info("password==={}", memberDto.getPassword());  //1234
+        log.info("userDetails.getPassword()==={}", userDetails.getPassword());
+        log.info("userDetails.getUsername()==={}", userDetails.getUsername());
 
 
-        return "member/info";
+        if (bCryptPasswordEncoder.matches(memberDto.getPassword(),
+                userDetails.getPassword())) {
+            MemberDto infoMemberDto = memberService.info(memberDto);
+            log.info("infoMemberDto==={}", infoMemberDto.toString());
+            model.addAttribute("infoMemberDto", infoMemberDto);
+
+        }
+        //throw new RuntimeException("오류입니다.");
+        throw new MemberException(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
     }
-
 }

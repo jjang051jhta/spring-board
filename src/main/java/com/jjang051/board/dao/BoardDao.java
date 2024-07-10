@@ -22,4 +22,5 @@ public interface BoardDao {
     List<BoardDto> getAllBoard();
 
     int deleteBoard(DeleteBoardDto deleteBoardDto);
+
 }

@@ -27,16 +27,18 @@
 <!--        <a href="" th:href="@{/member/login}" class="btn btn-outline-primary me-2">Login</a>-->
 <!--        <a href="" th:href="@{/member/signin}" class="btn btn-primary">Sign-up</a>-->
 <!--    </div>-->
+
     <div class="col-md-3 text-end"  sec:authorize="isAuthenticated()">
         <a href="" th:href="@{/member/info}" class="btn btn-outline-primary me-2"
            th:text="${#authentication.principal.memberDto.userName}">장성호</a>
+<!--        <a href="" th:href="@{/member/info}" class="btn btn-outline-primary me-2"-->
+<!--           th:text="${#authentication.name}">장성호</a>-->
         <a href="" th:href="@{/member/logout}"  class="btn btn-primary">LOG OUT</a>
     </div>
     <div class="col-md-3 text-end" sec:authorize="!isAuthenticated()">
         <a href="" th:href="@{/member/login}" class="btn btn-outline-primary me-2">Login</a>
         <a href="" th:href="@{/member/signin}" class="btn btn-primary">Sign-up</a>
     </div>
-
 
 
 </header>

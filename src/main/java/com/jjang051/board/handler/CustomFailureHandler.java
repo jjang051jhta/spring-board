@@ -21,13 +21,11 @@ public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler 
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        log.info("exception==={}",exception.toString());
+        log.info("exception==={}",request.getAttribute("userId"));
         String errorMsg = "";
         if(exception instanceof BadCredentialsException) {
-            log.info("BadCredentialsException");
             errorMsg="아이디 패스워드 확인해주세요.";
         } else if(exception instanceof InternalAuthenticationServiceException) {
-            log.info("InternalAuthenticationServiceException");
             errorMsg="알 수 없는 이유로 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
         }
         errorMsg = URLEncoder.encode(errorMsg,"UTF-8");  //utf-8

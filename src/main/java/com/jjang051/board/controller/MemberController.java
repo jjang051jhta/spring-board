@@ -2,6 +2,7 @@ package com.jjang051.board.controller;
 
 import com.jjang051.board.code.ErrorCode;
 import com.jjang051.board.dto.*;
+import com.jjang051.board.exception.BadRequestException;
 import com.jjang051.board.exception.MemberException;
 import com.jjang051.board.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -233,9 +234,9 @@ public class MemberController {
             MemberDto infoMemberDto = memberService.info(memberDto);
             log.info("infoMemberDto==={}", infoMemberDto.toString());
             model.addAttribute("infoMemberDto", infoMemberDto);
-
+            return "member/info";
         }
         //throw new RuntimeException("오류입니다.");
-        throw new MemberException(ErrorCode.NOT_FOUND);
+        throw new BadRequestException(ErrorCode.BAD_REQUEST);
     }
 }
